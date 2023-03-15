@@ -1,35 +1,35 @@
 package main
 
 import (
-	"fmt"
-	"os"
-
+	"github.com/TwiN/go-color"
 	"github.com/gempir/go-twitch-irc/v4"
-	"github.com/joho/godotenv"
+	"github.com/mr-cheeezz/dankbot/env"
+	"github.com/mr-cheeezz/dankbot/handler"
 )
 
 func main() {
-	godotenv.Load(".env")
+	env.Load()
 
-	OAuth := os.Getenv("OAUTH")
-	BotName := os.Getenv("BOT_NAME")
-	ChannelName := os.Getenv("CHANNEL_NAME")
+	var (
+		OAuth   = env.Get("BOT_OAUTH")
+		BotName = env.Get("BOT_NAME")
+
+		ChannelName = env.Get("CHANNEL_NAME")
+	)
 
 	client := twitch.NewClient(BotName, "oauth:"+OAuth)
 	client.Join(ChannelName)
 
-	client.OnConnect(func() {
-		client.Say(ChannelName, fmt.Sprintf("MrCheeezzBot | Golang version is now running. gopherDance "))
-		fmt.Println("Bot connected to channel: ", ChannelName)
-	})
+	handler.Clear(client)
+	handler.Connected(client)
 
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
-		fmt.Println(message.User.Name + ": " + message.Message)
+		handler.Commands(client, message)
+		handler.Logs(client)
 	})
 
 	err := client.Connect()
 	if err != nil {
-		panic(err)
+		panic(color.InRed(err))
 	}
-
 }
