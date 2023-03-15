@@ -11,8 +11,8 @@ import (
 
 func Connected(client *twitch.Client) {
 	env.Load()
-
 	DEBUG := env.Get("DEBUG")
+
 	client.OnConnect(func() {
 		client.Say(env.Get("CHANNEL_NAME"), fmt.Sprintf("MrCheeezzBot | Golang version is now running. gopherDance "))
 		if DEBUG == "true" {

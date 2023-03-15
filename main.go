@@ -1,35 +1,27 @@
 package main
 
 import (
-	"github.com/TwiN/go-color"
 	"github.com/gempir/go-twitch-irc/v4"
 	"github.com/mr-cheeezz/dankbot/env"
 	"github.com/mr-cheeezz/dankbot/handler"
 )
 
-func main() {
+func init() {
 	env.Load()
+}
 
-	var (
-		OAuth   = env.Get("BOT_OAUTH")
-		BotName = env.Get("BOT_NAME")
+func main() {
+	client := twitch.NewClient(env.Get("BOT_NAME"), "oauth:"+env.Get("BOT_OAUTH"))
 
-		ChannelName = env.Get("CHANNEL_NAME")
-	)
+	handlers(client)
+}
 
-	client := twitch.NewClient(BotName, "oauth:"+OAuth)
-	client.Join(ChannelName)
-
+func handlers(client *twitch.Client) {
 	handler.Clear(client)
 	handler.Connected(client)
-
+	handler.Connect(client)
 	client.OnPrivateMessage(func(message twitch.PrivateMessage) {
 		handler.Commands(client, message)
 		handler.Logs(client)
 	})
-
-	err := client.Connect()
-	if err != nil {
-		panic(color.InRed(err))
-	}
 }
