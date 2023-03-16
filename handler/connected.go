@@ -9,12 +9,14 @@ import (
 	"github.com/mr-cheeezz/dankbot/env"
 )
 
-func Connected(client *twitch.Client) {
+func init() {
 	env.Load()
-	DEBUG := env.Get("DEBUG")
+}
 
+func Connected(client *twitch.Client) {
+	DEBUG := env.Get("DEBUG")
 	client.OnConnect(func() {
-		client.Say(env.Get("CHANNEL_NAME"), fmt.Sprintf("MrCheeezzBot | Golang version is now running. gopherDance "))
+		client.Say(env.Get("CHANNEL_NAME"), "MrCheeezzBot | Golang version is now running. gopherDance ")
 		if DEBUG == "true" {
 			fmt.Println(color.InCyan("BOT STARTED IN DEBUG MODE"))
 			time.Sleep(2 * time.Second)

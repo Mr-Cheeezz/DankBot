@@ -1,1 +1,6 @@
+# Personal Stuff
 .env
+
+# Node Stuff
+package-lock.json
+node_modules
