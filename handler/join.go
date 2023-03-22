@@ -5,13 +5,9 @@ import (
 	"github.com/mr-cheeezz/dankbot/env"
 )
 
-func init() {
-	env.Load()
-}
-
-func Connect(client *twitch.Client) {
-	join(client)
-	connect(client)
+func Connect(client twitch.Client) {
+	join(&client)
+	connect(&client)
 }
 
 func join(client *twitch.Client) {

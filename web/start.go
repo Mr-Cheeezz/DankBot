@@ -2,7 +2,9 @@ package web
 
 import (
 	"html/template"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
@@ -10,14 +12,21 @@ import (
 )
 
 func Start() {
+	gin.SetMode(gin.ReleaseMode)
+
 	router := gin.Default()
+	router.Use(static.Serve("/", static.LocalFile("/static", true)))
 
-	router.Use(static.Serve("/", static.LocalFile("./static", true)))
-
-	tmpl, err := template.ParseFiles("templates/index.html")
+	tmpl, err := template.ParseFiles("web/templates/home.html")
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+
+	logFile, err := os.Create(".log")
+	if err != nil {
+		log.Fatal(err)
+	}
+	router.Use(gin.LoggerWithWriter(logFile))
 
 	handlerFunction := func(c *gin.Context) {
 		c.Render(http.StatusOK, render.HTML{
@@ -28,5 +37,7 @@ func Start() {
 
 	router.GET("/", handlerFunction)
 
-	router.Run(":8080")
+	if err := router.Run(":8080"); err != nil {
+		log.Fatal(err)
+	}
 }

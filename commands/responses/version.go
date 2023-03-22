@@ -1,9 +1,8 @@
-package commands
+package responses
 
-import (
-	"github.com/gempir/go-twitch-irc/v4"
-)
+import "github.com/mr-cheeezz/dankbot/env"
 
-func Version(client *twitch.Client, message *twitch.PrivateMessage) {
-	client.Reply(message.Channel, message.ID, "MrCheeezzBot - Golang | 1.0")
+func Version() string {
+	env.Load()
+	return "DankBot - Go | " + env.Get("VERSION")
 }

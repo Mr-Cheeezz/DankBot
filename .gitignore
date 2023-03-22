@@ -4,3 +4,9 @@
 # Node Stuff
 package-lock.json
 node_modules
+
+# js static files
+web/static/scripts/*
+
+# log files
+*.log
