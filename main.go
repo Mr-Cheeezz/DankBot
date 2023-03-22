@@ -12,19 +12,8 @@ func init() {
 
 func main() {
 	client := twitch.NewClient(env.Get("BOT_NAME"), "oauth:"+env.Get("BOT_OAUTH"))
-
 	handlers(client)
-}
-
-func join(client *twitch.Client) {
-	client.Join(env.Get("CHANNEL_NAME"))
-}
-
-func connect(client *twitch.Client) {
-	err := client.Connect()
-	if err != nil {
-		panic(err)
-	}
+	handler.Connect(*client)
 }
 
 func handlers(client *twitch.Client) {
@@ -32,5 +21,6 @@ func handlers(client *twitch.Client) {
 	handler.Logs(client)
 	handler.Commands(client)
 	handler.Alerts(client)
+	// handler.Timers(client)
 	handler.Connect(*client)
 }

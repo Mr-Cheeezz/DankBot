@@ -7,7 +7,6 @@ require (
 	github.com/gempir/go-twitch-irc/v4 v4.0.0
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.9.0
-	github.com/gorilla/mux v1.8.0
 	github.com/joho/godotenv v1.5.1
 )
 
