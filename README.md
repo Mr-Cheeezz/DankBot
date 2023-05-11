@@ -1,6 +1,6 @@
 # DankBot
 
-$ Twitch moderation bot in go
+## Twitch moderation bot in gopher language
 
 ---
 
